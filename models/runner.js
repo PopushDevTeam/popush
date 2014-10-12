@@ -39,6 +39,12 @@ function Runner(name, type, src){
 					{cmd:A, args:['0', that.name + '.out'], start:true}
 				];
 				break;
+			case 'hs':
+				that.script = [
+					{cmd:'ghc', args:['-o', that.name + '.out', that.name]},
+					{cmd:A, args:['0', that.name + '.out'], start:true}
+				];
+				break;
 			case 'js':
 				that.script  = [
 					{cmd:A, args:['1', NODE, that.name], start:true, filter:function(data){
@@ -92,6 +98,12 @@ function Runner(name, type, src){
 					{cmd:'./' + that.name + '.out', args:[], start:true}
 				];
 				break;
+            case 'hs':
+                that.script = [
+                  {cmd:'ghc', args:['-o', that.name + '.out', that.name]},
+                  {cmd:'./'+ that.name + '.out', args:[], start:true}
+                ];
+                break;
 			case 'js':
 				that.script  = [
 					{cmd:'node', args:[that.name], start:true, filter:function(data){
@@ -222,7 +234,7 @@ Runner.prototype.input = function(data, callback) {
 		return callback('no stdin');
 	}
 	if(!this.child.stdin.write(data, function(){
-		return callback(null);	
+		return callback(null);
 	})){
 		return callback('buffer full');
 	}
