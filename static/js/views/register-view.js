@@ -31,19 +31,28 @@ var app = app || {};
             }
             if (str) {
                 app.showMessageBar(id, str);
-            } else if (app.Lock.attach({
+            } 
+            else if (app.Lock.attach({
 				loading: '#register-control',
 				error: function (data) {
 					app.showMessageBar(id, data.err, 'error');
 				},
                 success: function () {
 					app.showMessageBar(id, 'registerok');
+					/*以下是修改注册后自动登录的代码*/
+	                app.socket.emit('login', {
+	                    name: name,
+	                    password: pass,
+	                });
+	                /*以上是修改注册后自动登录的代码*/
 				},
-            })) {
+            })) 
+            {
                 app.socket.emit('register', {
                     name: name,
                     password: pass,
                 });
+                
             }
         },
         /*快捷键回车注册*/
